@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bot de Aventura Narrativa - AFD + GLC</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="game-area">
+      <h1 class="title">🏴‍☠️ La Cueva del Tesoro Perdido</h1>
+      <div class="story-display" id="storyDisplay">
+        <div class="story-text" id="storyText">Cargando aventura...</div>
+      </div>
+      <div class="options-container" id="optionsContainer"></div>
+    </div>
+
+    <div class="debug-panel">
+      <div class="debug-section">
+        <div class="debug-title">📊 ESTADO DEL AFD</div>
+        <div class="state-indicator" id="currentState">INICIAL</div>
+        <div style="margin-top: 10px; font-size: 12px;">
+          <strong>Estados visitados:</strong>
+          <div id="visitedStates">ninguno</div>
+        </div>
+      </div>
+
+      <div class="debug-section">
+        <div class="debug-title">📝 GRAMÁTICA LIBRE DE CONTEXTO</div>
+        <div class="grammar-output" id="grammarOutput">
+          S → "Te encuentras" Lugar Sentimiento<br />
+          Lugar → "en una cueva misteriosa" | "ante dos senderos"<br />
+          Sentimiento → "con curiosidad" | "con nerviosismo"
+        </div>
+      </div>
+
+      <div class="debug-section">
+        <div class="debug-title">🔄 TRANSICIONES POSIBLES</div>
+        <div id="possibleTransitions" style="font-size: 12px;">Calculando...</div>
+      </div>
+
+      <div class="debug-section">
+        <div class="debug-title">🎮 CONTROLES</div>
+        <button class="reset-btn" onclick="resetGame()">🔄 Reiniciar Aventura</button>
+        <button class="reset-btn" onclick="showAFDInfo()" style="background: #2ed573; margin-top: 5px;">📋 Ver AFD Completo</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+<!-- Modal para visualizar el AFD -->
+<div id="afdModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Diagrama del Autómata Finito Determinista</h2>
+    <div id="afdGraph" style="width:100%; height:500px;"></div>
+    <div class="afd-details">
+      <h3>Detalles del AFD</h3>
+      <p><strong>Estados:</strong> <span id="totalStates">0</span></p>
+      <p><strong>Transiciones:</strong> <span id="totalTransitions">0</span></p>
+      <p><strong>Estados finales:</strong> <span id="finalStates">0</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para GLC -->
+<div id="glcModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Gramática Libre de Contexto</h2>
+    <div class="grammar-container">
+      <div class="grammar-rules">
+        <h3>Reglas de Producción</h3>
+        <div id="grammarRules"></div>
+      </div>
+      <div class="grammar-examples">
+        <h3>Ejemplos Generados</h3>
+        <button onclick="generateGrammarExample()">Generar Nuevo Ejemplo</button>
+        <div id="grammarExamples"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

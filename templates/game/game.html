@@ -17,6 +17,13 @@
       <span class="welcome-text">🌟 Bienvenido, {{ user.username }}! 🚀</span>
     </div>
     
+    <!-- Botón de cerrar sesión -->
+    <div class="logout-container">
+      <a href="{% url 'logout' %}" class="logout-btn">
+        <span>🚪 Cerrar Sesión</span>
+      </a>
+    </div>
+    
     <div class="game-area">
       <h1 class="title">🚀 El Devorador - Misión Espacial</h1>
       <div class="story-display" id="storyDisplay">

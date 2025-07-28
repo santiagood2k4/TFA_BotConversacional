@@ -427,3 +427,41 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(74, 158, 255, 0.4);
         }
+        
+        /* Estilos para el botón de cerrar sesión */
+        .logout-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .logout-btn {
+            display: inline-block;
+            background: linear-gradient(45deg, rgba(255, 71, 87, 0.8), rgba(255, 107, 129, 0.8));
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
+            background: linear-gradient(45deg, rgba(255, 71, 87, 0.9), rgba(255, 107, 129, 0.9));
+        }
+        
+        .logout-btn span {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        
+        .logout-btn:hover span {
+            transform: scale(1.05);
+        }

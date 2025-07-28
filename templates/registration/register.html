@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+        /* Estilos similares a login.html */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #fff;
+        }
+        .auth-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+        .auth-box h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4a9eff;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group input[type="email"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #4a9eff;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 16px;
+        }
+        .form-group input[type="text"]::placeholder,
+        .form-group input[type="password"]::placeholder,
+        .form-group input[type="email"]::placeholder {
+            color: #aaa;
+        }
+        .form-group input[type="submit"] {
+            background-color: #4a9eff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #3a8de6;
+        }
+        .errorlist {
+            color: #ff4757;
+            list-style: none;
+            padding: 0;
+            margin-top: 5px;
+        }
+        .helptext { /* Estilos para el texto de ayuda del formulario de Django */
+            font-size: 12px;
+            color: #ccc;
+            margin-top: 5px;
+        }
+        .auth-box p {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .auth-box p a {
+            color: #2ed573;
+            text-decoration: none;
+        }
+        .auth-box p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <h2>Registrarse</h2>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <span class="helptext">{{ field.help_text }}</span>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <ul class="errorlist"><li>{{ error }}</li></ul>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <div class="form-group">
+                    <input type="submit" value="Registrarse">
+                </div>
+            </form>
+            {% if form.non_field_errors %}
+                <ul class="errorlist">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
+        </div>
+    </div>
+</body>
+</html>

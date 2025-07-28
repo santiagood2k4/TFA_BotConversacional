@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bot de Aventura Narrativa - AFD + GLC</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+  {# Carga Vis.js PRIMERO, ya que script.js puede depender de él #}
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="game-area">
+      <h1 class="title">🚀 El Devorador - Misión Espacial</h1>
+      <div class="story-display" id="storyDisplay">
+        <div class="story-text" id="storyText">Cargando aventura...</div>
+      </div>
+
+      {# Añadir el contenedor de opciones (aunque ahora se use más el input de texto) #}
+      {# Esto evita un error si script.js intenta manipularlo #}
+      <div class="options-container" id="optionsContainer"></div>
+
+      <div class="input-container" style="display: flex; margin-top: 20px;"> {# Asegúrate de tener este estilo #}
+        <input type="text" id="userInput" placeholder="Escribe tu acción aquí..." style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #4a9eff; background-color: rgba(0,0,0,0.3); color: white;">
+        <button id="submitChoice" style="margin-left: 10px; background-color: #4a9eff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">Enviar</button>
+      </div>
+    </div>
+
+    <div class="debug-panel">
+      <div class="debug-section">
+        <div class="debug-title">📊 ESTADO DEL AFD</div>
+        <div class="state-indicator" id="currentState">INICIAL</div>
+        <div style="margin-top: 10px; font-size: 12px;">
+          <strong>Estados visitados:</strong>
+          <div id="visitedStates">ninguno</div>
+        </div>
+      </div>
+
+
+
+      <div class="debug-section">
+        <div class="debug-title">🔄 TRANSICIONES POSIBLES (Para debug)</div>
+        <div id="possibleTransitions" style="font-size: 12px;">Calculando...</div>
+      </div>
+
+      <div class="debug-section">
+        <div class="debug-title">🎮 CONTROLES</div>
+        <button class="reset-btn" onclick="resetGame()">🔄 Reiniciar Aventura</button>
+        <button class="reset-btn" onclick="showAFDInfo()" style="background: #2ed573; margin-top: 5px;">📋 Ver AFD Completo</button>
+        <button class="reset-btn" onclick="showHelp()" style="background: #ffa502; margin-top: 5px;">❓ Ayuda</button>
+      </div>
+    </div>
+  </div>
+
+  {# Carga tu script.js DESPUÉS de vis.js y al final del body para asegurar que el DOM esté cargado #}
+  <script src="{% static 'js/script.js' %}?v={{ timestamp|default:1 }}"></script>
+
+{# Modals (Mantenerlos al final del body también es buena práctica) #}
+<div id="afdModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('afdModal')">&times;</span>
+    <h2>Diagrama del Autómata Finito Determinista</h2>
+    <div id="afdGraph" style="width:100%; height:500px;"></div>
+    <div class="afd-details">
+      <h3>Detalles del AFD</h3>
+      <p><strong>Estados:</strong> <span id="totalStates">0</span></p>
+      <p><strong>Transiciones:</strong> <span id="totalTransitions">0</span></p>
+      <p><strong>Estados finales:</strong> <span id="finalStates">0</span></p>
+    </div>
+  </div>
+</div>
+
+
+
+<div id="helpModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('helpModal')">&times;</span>
+    <h2>🎮 Guía de Juego</h2>
+    <div class="help-container">
+      <div class="help-section">
+        <h3>📝 Cómo Jugar</h3>
+        <p>Escribe tus acciones en el campo de texto y presiona "Enviar" o Enter. El juego reconocerá diferentes formas de expresar la misma acción.</p>
+        
+        <h3>💡 Ejemplos de Acciones</h3>
+        <ul>
+          <li><strong>Investigar:</strong> "investigar nave", "examinar", "analizar", "revisar"</li>
+          <li><strong>Navegar:</strong> "laboratorio", "bodega", "médico", "sector médico"</li>
+          <li><strong>Comunicarse:</strong> "comunicarse", "hablar", "intentar comunicación"</li>
+          <li><strong>Planear:</strong> "planear ataque", "formar alianza", "ejecutar plan"</li>
+        </ul>
+        
+        <h3>🎯 Objetivo</h3>
+        <p>Salva la nave espacial de "El Devorador", una entidad alienígena que consume la conciencia de sus víctimas. Forma alianzas y usa tu ingenio para sobrevivir.</p>
+        
+        <h3>🔧 Funcionalidades</h3>
+        <ul>
+          <li><strong>Reiniciar:</strong> Comienza una nueva aventura</li>
+          <li><strong>Ver AFD:</strong> Visualiza el autómata finito determinista</li>
+        </ul>
+        
+        <h3>🎮 Controles del Juego</h3>
+        <ul>
+          <li><strong>Campo de texto:</strong> Escribe tus acciones aquí</li>
+          <li><strong>Enter:</strong> Envía tu acción rápidamente</li>
+          <li><strong>Sugerencias:</strong> Aparecen mientras escribes</li>
+        </ul>
+        
+        <h3>🌟 Consejos para Jugar</h3>
+        <ul>
+          <li>Puedes escribir las acciones de diferentes maneras</li>
+          <li>El juego reconoce sinónimos y variaciones</li>
+          <li>Explora todos los sectores de la nave</li>
+          <li>Forma alianzas con alienígenas y humanos</li>
+          <li>Cada decisión afecta el resultado final</li>
+        </ul>
+        
+        <h3>🚀 Historia</h3>
+        <p>Te despiertas en una nave espacial abandonada en el sector Omega-7. La nave está en cuarentena por una infección alienígena. Descubrirás que "El Devorador" es una entidad que consume la conciencia de sus víctimas. Los alienígenas no son la amenaza, son refugiados que buscan tu ayuda.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

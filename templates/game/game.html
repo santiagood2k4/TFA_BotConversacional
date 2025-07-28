@@ -12,6 +12,11 @@
 </head>
 <body>
   <div class="container">
+    <!-- Mensaje de bienvenida personalizado -->
+    <div class="welcome-message" id="welcomeMessage">
+      <span class="welcome-text">🌟 Bienvenido, {{ user.username }}! 🚀</span>
+    </div>
+    
     <div class="game-area">
       <h1 class="title">🚀 El Devorador - Misión Espacial</h1>
       <div class="story-display" id="storyDisplay">
@@ -25,6 +30,13 @@
       <div class="input-container" style="display: flex; margin-top: 20px;"> {# Asegúrate de tener este estilo #}
         <input type="text" id="userInput" placeholder="Escribe tu acción aquí..." style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #4a9eff; background-color: rgba(0,0,0,0.3); color: white;">
         <button id="submitChoice" style="margin-left: 10px; background-color: #4a9eff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">Enviar</button>
+      </div>
+      
+      <!-- Botón de reinicio cuando el juego está en estado final -->
+      <div id="restartContainer" style="display: none; text-align: center; margin-top: 20px;">
+        <button onclick="resetGame()" style="background: linear-gradient(45deg, #ffa502, #ff6348); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px;">
+          🚀 Reiniciar Aventura
+        </button>
       </div>
     </div>
 

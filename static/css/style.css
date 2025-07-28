@@ -15,22 +15,40 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            display: -ms-grid;
             display: grid;
+            -ms-grid-columns: 1fr 300px;
             grid-template-columns: 1fr 300px;
             gap: 20px;
-            height: 100vh;
+            min-height: 100vh;
+            align-items: start;
         }
 
         .game-area {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             padding: 25px;
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
+            display: -ms-flexbox;
             display: flex;
+            -ms-flex-direction: column;
             flex-direction: column;
+            min-height: calc(100vh - 40px);
+        }
+        
+        /* Fallback para navegadores que no soporten backdrop-filter */
+        @supports not (backdrop-filter: blur(10px)) {
+            .game-area {
+                background: rgba(255, 255, 255, 0.2);
+            }
+            .debug-panel {
+                background: rgba(255, 255, 255, 0.2);
+            }
         }
 
         .story-display {
+            -ms-flex: 1;
             flex: 1;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
@@ -84,9 +102,12 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             padding: 20px;
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
-            max-height: 100vh;
+            max-height: calc(100vh - 40px);
             overflow-y: auto;
+            position: sticky;
+            top: 20px;
         }
 
         .debug-section {
@@ -320,7 +341,89 @@
   margin-bottom: 15px;
 }
 
-.help-section li {
-  margin-bottom: 8px;
-  line-height: 1.5;
-}
+        .help-section li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        /* Mensaje de bienvenida personalizado */
+        .welcome-message {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(45deg, rgba(74, 158, 255, 0.8), rgba(46, 213, 115, 0.8));
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            animation: slideInFromTop 0.8s ease-out;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .welcome-text {
+            font-weight: bold;
+            font-size: 14px;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .username {
+            color: #ffd700;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Estilos para el contenedor de input del juego */
+        .input-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            align-items: center;
+        }
+
+        .input-container input[type="text"] {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #4a9eff;
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input-container input[type="text"]:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .input-container button {
+            padding: 15px 25px;
+            background: linear-gradient(45deg, #4a9eff, #00d4ff);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            min-width: 150px;
+        }
+
+        .input-container button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 158, 255, 0.4);
+        }

@@ -177,12 +177,24 @@ function updateUI(gameState) {
         storyTextDiv.appendChild(finalMessageDiv); // Esto podría requerir ajuste de CSS para verse bien.
         // Ocultar input y botón de envío si el juego ha terminado
         document.querySelector('.input-container').style.display = 'none';
+        
+        // Mostrar botón de reinicio
+        const restartContainer = document.getElementById('restartContainer');
+        if (restartContainer) {
+            restartContainer.style.display = 'block';
+        }
 
     } else {
         userInput.disabled = false;
         submitChoiceBtn.disabled = false;
         userInput.value = ''; // Limpiar el input para la siguiente acción
         document.querySelector('.input-container').style.display = 'flex'; // Asegurar que sea visible
+        
+        // Ocultar botón de reinicio
+        const restartContainer = document.getElementById('restartContainer');
+        if (restartContainer) {
+            restartContainer.style.display = 'none';
+        }
     }
 }
 

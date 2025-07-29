@@ -590,21 +590,33 @@ class GramaticaNarrativa:
             'ataque_masivo': ['ataque masivo', 'ofensiva masiva', 'ataque conjunto']
         }
         
-        # 3. Buscar coincidencias usando las reglas de equivalencia
+        # 3. Buscar coincidencias usando las reglas de equivalencia (validación estricta)
         for transition in available_transitions:
             if transition in action_equivalents:
                 equivalents = action_equivalents[transition]
                 for equivalent in equivalents:
-                    if equivalent in normalized_input or normalized_input in equivalent:
+                    # Validación estricta: la entrada debe coincidir exactamente o ser una palabra completa
+                    if (normalized_input == equivalent or 
+                        normalized_input.startswith(equivalent + ' ') or 
+                        normalized_input.endswith(' ' + equivalent) or
+                        ' ' + equivalent + ' ' in ' ' + normalized_input + ' '):
                         return True, transition
         
-        # 4. Validación por palabras clave (fallback)
+        # 4. Validación por palabras clave (fallback mejorado)
         for transition in available_transitions:
             # Dividir la transición en palabras clave
             keywords = transition.replace('_', ' ').split()
-            # Verificar si al menos una palabra clave está en la entrada del usuario
-            if any(keyword in normalized_input for keyword in keywords):
-                return True, transition
+            # Verificar que TODAS las palabras clave estén en la entrada del usuario
+            # y que no haya caracteres extraños al inicio o final
+            input_words = normalized_input.split()
+            if len(input_words) >= len(keywords):
+                # Verificar que las palabras clave estén en orden en la entrada
+                keyword_index = 0
+                for word in input_words:
+                    if keyword_index < len(keywords) and keywords[keyword_index] in word:
+                        keyword_index += 1
+                        if keyword_index == len(keywords):
+                            return True, transition
         
         return False, None
 
